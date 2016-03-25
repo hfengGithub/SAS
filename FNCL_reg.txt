@@ -1,0 +1,25 @@
+PROC REG DATA=WORK.SORTTempTableSorted
+	;
+	Linear_Regression_Model: MODEL FNCL = USSW2 USSW5 USSW10
+		/		SELECTION=NONE
+		NOINT
+		STB SS1
+	;
+
+/* Start of custom user code. */
+    restrict USSW2 + USSW5 + USSW10 = 1;
+
+/* End of custom user code. */
+
+	OUTPUT OUT=WORK.TMP1TempTableForPlots
+		PREDICTED=_predicted1 RESIDUAL=_residual1 STUDENT=_student1
+		RSTUDENT=_rstudent1 LCL=_lcl1 LCLM=_lclm1
+		UCL=_ucl1 UCLM=_uclm1
+		COOKD=_cookd1 DFFITS=_dffits1 H=_h1
+		STDI=_stdi1 STDP=_stdp1 STDR=_stdr1
+		COVRATIO=_covratio1;
+
+	OUTPUT OUT=SASUSER.PREDLinRegPredictions_7YDIFF2__8(LABEL="Linear regression predictions and statistics for WORK._7YDIFF2__8718")
+		PREDICTED=predicted_FNCL ;
+RUN;
+QUIT;
